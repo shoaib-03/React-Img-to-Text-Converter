@@ -18,7 +18,6 @@ function App() {
     setLoadingStatus(true);
 
     const file = e.target.files[0];
-    console.log(file);
 
     if (file) {
       const fd = new FormData();
@@ -36,7 +35,7 @@ function App() {
           config
         )
         .then((result) => {
-          setImageURL(result.data.url);
+          setImageURL(result.data.secure_url);
         })
         .catch((err) => {
           console.log(err);
@@ -46,14 +45,11 @@ function App() {
 
   const convertImage = (url) => {
     setLoaderText("processing image... please wait!");
-    Tesseract.recognize(url, "eng", { logger: (m) => console.log(m) }).then(
-      (result) => {
-        console.log(result);
-        setText(result.data.text);
-        setLoadingStatus(false);
-        setProcessed(true);
-      }
-    );
+    Tesseract.recognize(url, "eng").then((result) => {
+      setText(result.data.text);
+      setLoadingStatus(false);
+      setProcessed(true);
+    });
   };
 
   useEffect(() => {
