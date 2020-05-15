@@ -1,24 +1,95 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useState, useEffect } from "react";
+import axios from "axios";
+import Tesseract from "tesseract.js";
+
+import "./App.css";
+import ImageWrapper from "./components/ImageWrapper";
+import TextWrapper from "./components/TextWrapper";
+import Loader from "./components/Loader";
 
 function App() {
+  const [imageURL, setImageURL] = useState(undefined);
+  const [text, setText] = useState("");
+  const [loadingStatus, setLoadingStatus] = useState(false);
+  const [isProcessed, setProcessed] = useState(false);
+  const [loaderText, setLoaderText] = useState("uploading image...");
+
+  const uploadImage = (e) => {
+    setLoadingStatus(true);
+
+    const file = e.target.files[0];
+    console.log(file);
+
+    if (file) {
+      const fd = new FormData();
+      fd.append("file", file);
+      fd.append("upload_preset", "image-converter");
+
+      const config = {
+        headers: { "X-Requested-With": "XMLHttpRequest" },
+      };
+
+      axios
+        .post(
+          "https://api.cloudinary.com/v1_1/my-cloud-ss/image/upload",
+          fd,
+          config
+        )
+        .then((result) => {
+          setImageURL(result.data.url);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
+  };
+
+  const convertImage = (url) => {
+    setLoaderText("processing image... please wait!");
+    Tesseract.recognize(url, "eng", { logger: (m) => console.log(m) }).then(
+      (result) => {
+        console.log(result);
+        setText(result.data.text);
+        setLoadingStatus(false);
+        setProcessed(true);
+      }
+    );
+  };
+
+  useEffect(() => {
+    if (imageURL) {
+      convertImage(imageURL);
+    }
+  }, [imageURL]);
+
+  const convertAgain = () => {
+    setImageURL(undefined);
+    setText("");
+    setLoadingStatus(false);
+    setProcessed(false);
+    setLoaderText("uploading image...");
+  };
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <div className="logo">
+        <h1>Light Converter</h1>
+        <p>convert image to text</p>
+      </div>
+      <div className="container">
+        {loadingStatus ? (
+          <Loader loadingText={loaderText} />
+        ) : isProcessed ? (
+          <TextWrapper text={text} />
+        ) : (
+          <ImageWrapper uploadImage={uploadImage} />
+        )}
+      </div>
+      {isProcessed ? (
+        <div className="restart">
+          <button onClick={convertAgain}>Convert Again</button>
+        </div>
+      ) : null}
     </div>
   );
 }

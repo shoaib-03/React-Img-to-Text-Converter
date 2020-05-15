@@ -1,38 +1,150 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Open Sans", sans-serif;
+  font-weight: 400;
+  color: #263145;
+}
 .App {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  flex-direction: column;
+}
+.logo {
   text-align: center;
 }
-
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+.logo h1 {
+  color: #ff006c;
+  font-weight: 300;
+  cursor: pointer;
 }
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+.logo p {
+  color: #263145;
+  font-weight: 500;
+  letter-spacing: 1.3px;
+  margin-top: 5px;
+  text-decoration: underline;
+  cursor: pointer;
 }
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+.container {
+  background-color: #fff;
+  width: 80%;
+  height: 70%;
+  box-shadow: 0px 0px 5px 0.01px rgba(0, 0, 0, 0.1);
+}
+.wrapper {
   display: flex;
-  flex-direction: column;
-  align-items: center;
   justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+  align-items: center;
+  width: 100%;
+  height: 100%;
 }
 
-.App-link {
-  color: #61dafb;
+/* *** Loader Styles *** */
+.loading-wrapper {
+  flex-direction: column;
+  position: relative;
+}
+.loader {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 22px;
+  letter-spacing: 1.2px;
+  width: 100%;
+  height: 99%;
+}
+.loading {
+  width: 100%;
+  height: 1.2%;
+  background-color: #ffccbc;
+  position: relative;
+  top: 0;
+  left: 0;
 }
 
-@keyframes App-logo-spin {
+@keyframes loadingAnimation {
   from {
-    transform: rotate(0deg);
+    left: 0%;
   }
   to {
-    transform: rotate(360deg);
+    left: 80%;
   }
+}
+
+.loading::before {
+  position: absolute;
+  content: "";
+  width: 20%;
+  height: 100%;
+  background-color: #ff006c;
+  animation: loadingAnimation 1.5s infinite linear;
+}
+
+/* *** Image Styles *** */
+.input-tag {
+  display: none;
+}
+.input-btn,
+.restart button {
+  background: transparent;
+  cursor: pointer;
+  color: #ff006c;
+  padding: 20px 40px;
+  font-size: 20px;
+  letter-spacing: 1.2px;
+  font-weight: 500;
+  border: 2px solid #ff006c;
+  border-radius: 50px;
+  transition: all 0.2s ease-in-out;
+}
+.input-btn:hover {
+  background-color: #ff006c;
+  color: #fff;
+}
+.input-btn:focus,
+.restart button:focus {
+  outline: none;
+}
+
+/* *** Text  Styles *** */
+
+textarea {
+  width: 100%;
+  height: 100%;
+  border: none;
+  padding: 20px;
+  font-size: 18px;
+  letter-spacing: 1.1px;
+  resize: none;
+  overflow-y: scroll;
+}
+textarea:focus {
+  outline: none;
+}
+
+/* *** Scroll Bar Styles *** */
+::-webkit-scrollbar {
+  width: 10px;
+}
+::-webkit-scrollbar-track {
+  background: #eee;
+}
+::-webkit-scrollbar-thumb {
+  background: #666;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #ff006c;
+}
+
+/* Conver Again Button */
+.restart button {
+  background: #ff006c;
+  color: #fff;
+  padding: 10px 20px;
+  box-shadow: 1px 1px 20px 0.2px rgba(0, 0, 0, 0.2);
 }
