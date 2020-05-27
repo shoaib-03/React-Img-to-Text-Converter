@@ -1,6 +1,6 @@
 Light Converter - Convert Image to Text
 
-[Live Demo](https://imagetotexts.netlify.app/)
+[Live Demo](https://imagetotextconverter.netlify.app/)
 
 ## About
 
